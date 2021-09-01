@@ -1,0 +1,497 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Dock Documentation",
+    "description": "This is an API Dock",
+    "version": "1.0.0",
+    "contact": {
+      "email": "evertonsdsilva@gmail.com"
+    }
+  },
+  "paths": {
+    "/v1/pessoas": {
+      "post": {
+        "tags": ["Pessoas"],
+        "summary": "Criar uma pessoa",
+        "description": "Criar uma pessoa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string"
+                  },
+                  "cpf": {
+                    "type": "string"
+                  },
+                  "dataNascimento": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "nome": "Everton Oliveira",
+                  "cpf": "32234234234",
+                  "dataNascimento": "2000-01-01"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/contas": {
+      "post": {
+        "tags": ["Contas"],
+        "summary": "Criar uma conta",
+        "description": "Criar uma conta",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idPessoa": {
+                    "type": "number"
+                  },
+                  "saldo": {
+                    "type": "number"
+                  },
+                  "limiteSaqueDiario": {
+                    "type": "number"
+                  },
+                  "flagAtivo": {
+                    "type": "boolean"
+                  },
+                  "tipoConta": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "idPessoa": 1,
+                  "saldo": 10.5,
+                  "limiteSaqueDiario": 5.10,
+                  "flagAtivo": true,
+                  "tipoConta": 1
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "idPessoa": 1,
+                    "saldo": 10.5,
+                    "limiteSaqueDiario": 5.1,
+                    "flagAtivo": true,
+                    "tipoConta": 1,
+                    "dataCriacao": "2021-09-01T11:20:30.474Z",
+                    "idConta": 4
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/contas/deposito": {
+      "post": {
+        "tags": ["Contas"],
+        "summary": "Criar um deposito",
+        "description": "Criar um deposito",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idConta": {
+                    "type": "number"
+                  },
+                  "valor": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "idConta": 1,
+                  "valor": 1.5
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": {
+                      "message": "Essa conta enconta-se bloqueada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": {
+                      "message": "Não foi possível identificar a conta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contas/saldo/{idConta}": {
+      "get": {
+        "tags": ["Contas"],
+        "summary": "Buscar saldo por conta",
+        "description": "Buscar saldo por conta",
+        "parameters": [
+          {
+            "name": "idConta",
+            "in": "path",
+            "description": "idConta",
+            "required": true,
+            "schema": {
+              "type":"number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "saldo": 12
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": {
+                      "message": "Essa conta enconta-se bloqueada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": {
+                      "message": "Não foi possível identificar a conta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contas/saque": {
+      "post": {
+        "tags": ["Contas"],
+        "summary": "Criar um saque",
+        "description": "Criar um saque",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idConta": {
+                    "type": "number"
+                  },
+                  "valor": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "idConta": 1,
+                  "valor": 1.5
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": {
+                      "message": "Essa conta enconta-se bloqueada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": {
+                      "message": "Seu saldo (100) é menor que o valor que deseja sacar (200)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": {
+                      "message": "Não foi possível identificar a conta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contas/bloqueio/{idConta}": {
+      "put": {
+        "tags": ["Contas"],
+        "summary": "Bloquear conta",
+        "description": "Bloquear conta",
+        "parameters": [
+          {
+            "name": "idConta",
+            "in": "path",
+            "description": "idConta",
+            "required": true,
+            "schema": {
+              "type":"number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "boolean"
+                  }
+                },
+                "example": {
+                  "status": false
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": {
+                      "message": "Não foi possível identificar a conta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contas/extrato": {
+      "post": {
+        "tags": ["Contas"],
+        "summary": "Extrato por conta",
+        "description": "Extrato por conta",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idConta": {
+                    "type": "number"
+                  },
+                  "initialDate": {
+                    "type": "date"
+                  },
+                  "finishDate": {
+                    "type": "date"
+                  }
+                },
+                "example": {
+                  "idConta": 1,
+                  "initialDate": "2021-01-01",
+                  "finishDate": "2021-10-01"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "idConta": 1,
+                    "idPessoa": 1,
+                    "saldo": 13,
+                    "limiteSaqueDiario": 5,
+                    "flagAtivo": true,
+                    "tipoConta": "1",
+                    "dataCriacao": "2020-01-01T00:00:00.000Z",
+                    "transacoes": [
+                      {
+                        "idTransacao": 1,
+                        "idConta": 1,
+                        "valor": 1.5,
+                        "dataTransacao": "2021-08-31T12:24:27.563Z"
+                      },
+                      {
+                        "idTransacao": 2,
+                        "idConta": 1,
+                        "valor": 1.5,
+                        "dataTransacao": "2021-08-31T12:25:50.170Z"
+                      },
+                      {
+                        "idTransacao": 3,
+                        "idConta": 1,
+                        "valor": 1.5,
+                        "dataTransacao": "2021-08-31T12:26:09.852Z"
+                      },
+                      {
+                        "idTransacao": 4,
+                        "idConta": 1,
+                        "valor": 1.5,
+                        "dataTransacao": "2021-08-31T21:37:20.380Z"
+                      },
+                      {
+                        "idTransacao": 5,
+                        "idConta": 1,
+                        "valor": -1.5,
+                        "dataTransacao": "2021-08-31T22:00:07.209Z"
+                      }
+                    ],
+                    "pessoa": {
+                      "idPessoa": 1,
+                      "nome": "Everton Oliveira",
+                      "cpf": "32234234234",
+                      "dataNascimento": "2000-01-01T00:00:00.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": {
+                      "message": "Essa conta enconta-se bloqueada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": {
+                      "message": "Não foi possível identificar a conta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
