@@ -5,20 +5,37 @@ import cors from 'cors';
 import '../../container';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
+import { graphqlHTTP } from 'express-graphql';
 import fs from 'fs';
 import morgan from 'morgan';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { AppError } from '@shared/errors/AppError';
 import '@shared/infra/typeorm';
 
 import swaggerFile from '../../../swagger.json';
+import resolvers from './resolvers';
 import { router } from './routes';
+import typeDefs from './schemas';
+
+const schema = makeExecutableSchema({
+  resolvers,
+  typeDefs,
+});
 
 const app = express();
+
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+);
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
