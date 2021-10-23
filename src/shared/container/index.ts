@@ -1,23 +1,10 @@
 import { container } from 'tsyringe';
 
-import { ContasRepository } from '@modules/conta/infra/typeorm/repositories/ContasRepository';
-import { IContasRepository } from '@modules/conta/repositories/IConstasRepository';
-import { PessoasRepository } from '@modules/pessoas/infra/typeorm/repositories/PessoasRepository';
-import { IPessoasRepository } from '@modules/pessoas/repositories/IPessoasRepository';
-import { TransacoesRepository } from '@modules/transacoes/infra/typeorm/repositories/TransacoesRepository';
-import { ITransacoesRepository } from '@modules/transacoes/repositories/ITransacoesRepository';
+import { UsersRepository } from '@modules/users/infra/prisma/repostitories/UsersRepository';
+// import { UsersRepository } from '@modules/users/infra/typeorm/repositories/UsersRepository';
+import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 
-container.registerSingleton<IPessoasRepository>(
-  'PessoasRepository',
-  PessoasRepository
-);
-
-container.registerSingleton<IContasRepository>(
-  'ContasRepository',
-  ContasRepository
-);
-
-container.registerSingleton<ITransacoesRepository>(
-  'TransacoesRepository',
-  TransacoesRepository
+container.registerSingleton<IUserRepository>(
+  'UsersRepository',
+  UsersRepository
 );
