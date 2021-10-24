@@ -48,6 +48,21 @@
           }
         }
       }
+    },
+    "/v1/user/list": {
+      "get": {
+        "tags": ["User"],
+        "summary": "List users",
+        "description": "List users",
+        "responses": {
+          "200": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   }
 }

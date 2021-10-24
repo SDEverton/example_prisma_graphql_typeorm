@@ -23,6 +23,10 @@ class UsersRepository implements IUserRepository {
 
     return user;
   }
+
+  async findAll(): Promise<ICreateUserDTO[]> {
+    return this.repository.find();
+  }
 }
 
 export { UsersRepository };

@@ -7,11 +7,15 @@ class UsersRepository implements IUserRepository {
   private prisma = new PrismaClient();
 
   async create(data: ICreateUserDTO): Promise<ICreateUserDTO> {
-    const person = await this.prisma.users.create({
+    const user = await this.prisma.users.create({
       data,
     });
 
-    return person;
+    return user;
+  }
+
+  async findAll(): Promise<ICreateUserDTO[]> {
+    return this.prisma.users.findMany();
   }
 }
 
